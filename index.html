@@ -39,7 +39,6 @@
     padding: 16px 18px; background: transparent; transition: background 0.4s ease; gap: 10px;
   }
   header.site-header.solid { background: var(--cream); }
-  .dev-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 250; background: var(--brown); color: var(--cream); font-family: 'Manrope', sans-serif; font-size: 12px; text-align: center; padding: 7px 16px; letter-spacing: 0.2px; }
   header.site-header .brand { flex: none; display: flex; align-items: center; }
   header.site-header .brand img { height: 46px; width: auto; display: block; }
   .header-actions { display: flex; align-items: center; gap: 8px; }
@@ -162,6 +161,7 @@
 
   .maison-photo-block { padding: 0 24px 0; max-width: 640px; margin: 0 auto; }
   .maison-photo-block .frame { width: 100%; aspect-ratio: 4/3; border-radius: 2px; overflow: hidden; transition: transform 0.4s ease; }
+  .maison-photo-block .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .maison-photo-block .frame:hover { transform: scale(1.015); }
   .maison-photo-block .cap { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 19px; color: var(--brown); margin: 18px 0 0; text-align: center; }
 
@@ -179,8 +179,18 @@
   .allergen-info { font-family: 'Manrope', sans-serif; font-size: 12.5px; color: var(--muted); max-width: 420px; margin: 10px auto 0; line-height: 1.6; display: none; }
   .allergen-info.open { display: block; }
 
-  .cat-nav { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 18px 0 8px; }
-  .cat-nav a { font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600; color: var(--brown); background: var(--beige); text-decoration: none; padding: 8px 14px; border-radius: 16px; }
+  .cat-nav-sticky { position: sticky; top: 78px; z-index: 150; background: var(--cream); margin: 0 -24px; padding: 10px 24px 4px; }
+  .prod-search { max-width: 420px; margin: 0 auto 12px; position: relative; }
+  .prod-search input { width: 100%; box-sizing: border-box; font-family: 'Manrope', sans-serif; font-size: 14px; color: var(--brown); background: var(--beige); border: 1px solid var(--border); border-radius: 20px; padding: 10px 40px 10px 16px; outline: none; }
+  .prod-search input:focus { border-color: var(--orange); }
+  .prod-search button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%; border: none; background: none; color: var(--muted); font-size: 18px; line-height: 1; cursor: pointer; }
+  .prod-search button:hover { color: var(--brown); }
+  .prod-search-empty { text-align: center; font-family: 'Manrope', sans-serif; font-size: 13px; color: var(--muted); padding: 4px 0 10px; }
+  .cat-nav { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 0 0 8px; }
+  .cat-nav a { display: inline-flex; align-items: center; font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; color: var(--brown); background: var(--beige); text-decoration: none; padding: 10px 16px; border-radius: 18px; border: 1px solid transparent; transition: background 0.2s ease, border-color 0.2s ease; }
+  .cat-nav a:hover { background: var(--tan-light); }
+  .cat-nav a.active { background: var(--orange); color: var(--cream); }
+  .prod-card.search-hidden, .pg-label.search-hidden, .prod-section.search-hidden, .list-group.search-hidden { display: none !important; }
 
   .prod-section { padding: 52px 0 8px; max-width: 1180px; margin: 0 auto; scroll-margin-top: 80px; }
   .sec-head { text-align: center; margin-bottom: 8px; }
@@ -312,8 +322,6 @@
     </button>
   </div>
 </header>
-
-<div class="dev-banner">🚧 Le site est en cours de finition, les photos arrivent bientôt !</div>
 
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu-top">
@@ -449,7 +457,7 @@
 
       <div class="maison-photo-block reveal" data-reveal="6">
         <div class="frame">
-          <div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div>
+          <img src="Photo équipe.png" alt="Notre équipe" loading="lazy">
         </div>
         <p class="cap">Une équipe toujours là pour vous</p>
       </div>
@@ -480,15 +488,526 @@
       <p class="allergen-info" id="allergenInfo">La liste complète des allergènes présents dans nos produits est disponible en boutique et communiquée sur simple demande au 01 30 55 53 94.</p>
     </div>
 
-    <nav class="cat-nav">
-      <a href="#produits" data-nav-anchor="produits:pain">Pain</a>
-      <a href="#produits" data-nav-anchor="produits:patisserie">Pâtisserie</a>
-      <a href="#produits" data-nav-anchor="produits:viennoiserie">Viennoiserie</a>
-      <a href="#produits" data-nav-anchor="produits:snacking">Snacking &amp; boissons</a>
-      <a href="#produits" data-nav-anchor="produits:evenements">Événements</a>
-    </nav>
+    <div class="cat-nav-sticky">
+      <div class="prod-search">
+        <input type="text" id="prodSearch" placeholder="Rechercher un produit…" autocomplete="off">
+        <button type="button" id="prodSearchClear" aria-label="Effacer la recherche" hidden>&times;</button>
+      </div>
+      <nav class="cat-nav">
+        <a href="#produits" data-nav-anchor="produits:patisserie">Pâtisserie</a>
+        <a href="#produits" data-nav-anchor="produits:cakes-macarons">Cakes &amp; macarons</a>
+        <a href="#produits" data-nav-anchor="produits:evenements">Événements</a>
+        <a href="#produits" data-nav-anchor="produits:pain">Pains</a>
+        <a href="#produits" data-nav-anchor="produits:viennoiserie">Viennoiserie</a>
+        <a href="#produits" data-nav-anchor="produits:snacking">Snacking &amp; boissons</a>
+      </nav>
+      <p class="prod-search-empty" id="prodSearchEmpty" hidden>Aucun produit ne correspond à votre recherche.</p>
+    </div>
 
-    <section id="pain" class="prod-section">
+    <section id="patisserie" class="prod-section">
+          <div class="sec-head">
+            <span class="sec-badge">Signature</span>
+            <h2>La pâtisserie : notre signature</h2>
+            <p class="sec-intro">Chaque pièce est pensée comme un moment de plaisir, façonnée dans notre atelier.</p>
+            <div class="lead-pill"><span class="dot"></span><span>Commande conseillée 48h à l’avance · Pas de commande le samedi pour une livraison le dimanche</span></div>
+          </div>
+            
+              <div class="prod-grid"><article class="prod-card">
+                    <div class="prod-photo"><img src="caprice.png" alt="Caprice" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Caprice</h3>
+                    <p class="prod-desc">Biscuit citron amande, crémeux cassis framboise, mousse fromage blanc citron vert.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="charlotte-aux-fraises.png" alt="Charlotte aux Fraises" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Charlotte aux Fraises</h3>
+                    <p class="prod-desc">Biscuits cuillère et fraises fraîches.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="eclat.png" alt="Éclat" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Éclat</h3>
+                    <p class="prod-desc">Noisettes, bavaroise vanille et caramel fleur de sel.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="fraisiers.png" alt="Fraisier" loading="lazy" style="object-fit: contain; background: #CDAE90;"></div>
+                  <div>
+                    <h3 class="prod-name">Fraisier</h3>
+                    <p class="prod-desc">Génoise, crème pâtissière légère, fraises.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="fraicheur-des-iles.png" alt="Fraîcheur des Îles" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Fraîcheur des Îles</h3>
+                    <p class="prod-desc">Dacquoise coco, palet chocolat, mousse passion, framboises.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="merveilleux.png" alt="Merveilleux" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Merveilleux</h3>
+                    <p class="prod-desc">Brownie, bavaroise vanille, mousse chocolat caramel.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="paris-brest.png" alt="Paris Brest" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Paris Brest</h3>
+                    <p class="prod-desc">Praliné noisette et pâte à choux, notre grand classique.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="plaisir.png" alt="Plaisir" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Plaisir</h3>
+                    <p class="prod-desc">Parfait vanille et chocolat, Joconde caramélisée.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="royal.png" alt="Royale" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Royale</h3>
+                    <p class="prod-desc">Dacquoise amande, praliné croustillant, mousse chocolat.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="saint-honore.png" alt="Saint Honoré" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Saint Honoré</h3>
+                    <p class="prod-desc">Chantilly vanille et choux caramélisés.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">18,80 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">28,20 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">37,60 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tarte-aux-fraises.png" alt="Tarte aux Fraises" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Tarte aux Fraises</h3>
+                    <p class="prod-desc">Fraises fraîches sur crème pâtissière.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">41,60 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tarte-fraises-et-framboises.png" alt="Tarte aux Fraises &amp; Framboises" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Tarte aux Fraises &amp; Framboises</h3>
+                    <p class="prod-desc">Un mélange de fruits rouges de saison.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">41,60 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tarte-framboises.png" alt="Tarte aux Framboises" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Tarte aux Framboises</h3>
+                    <p class="prod-desc">Framboises fraîches sur crème pâtissière.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">41,60 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tarte-citron-meringuee.png" alt="Tarte Citron Meringuée" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Tarte Citron Meringuée</h3>
+                    <p class="prod-desc">Crème citron acidulée, meringue légèrement dorée.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="vanille-praline.png" alt="Tarte Vanille Praliné" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Tarte Vanille Praliné</h3>
+                    <p class="prod-desc">Crème vanille et cœur praliné.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">27,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="Noisettine.png" alt="Noisettine" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Noisettine</h3>
+                    <p class="prod-desc">Macaron noisette, crémeux vanille et framboises fraîches.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">43,20 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="prestige.png" alt="Prestige" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Prestige</h3>
+                    <p class="prod-desc">Pain de génoise pistache, crème pistache et framboise.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">43,20 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
+                  <div>
+                    <h3 class="prod-name">Opéra</h3>
+                    <p class="prod-desc">Biscuit Joconde, crème café, ganache chocolat.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
+                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
+                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+</div>
+            <p class="pg-label">Pâtisserie individuelle</p>
+              <div class="prod-grid"><article class="prod-card">
+                    <div class="prod-photo"><img src="baba-au-rhum.png" alt="Baba au Rhum" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Baba au Rhum</h3>
+                    <p class="prod-desc">Imbibé de rhum, servi avec sa chantilly.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="eclair-cafe-chocolat.png" alt="Éclair Café / Chocolat" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Éclair Café / Chocolat</h3>
+                    <p class="prod-desc">Crème pâtissière café ou chocolat.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">3,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="eclat-individuel.png" alt="Éclat Individuel" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Éclat Individuel</h3>
+                    <p class="prod-desc">Noisettes, bavaroise vanille et caramel fleur de sel.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="fraicheur-des-iles-individuel.png" alt="Fraîcheur des Îles Individuel" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Fraîcheur des Îles Individuel</h3>
+                    <p class="prod-desc">Dacquoise coco, palet chocolat, mousse passion, framboises.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="merveilleux-individuel.png" alt="Merveilleux Individuel" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Merveilleux Individuel</h3>
+                    <p class="prod-desc">Brownie, bavaroise vanille, mousse chocolat caramel.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="mille-feuille.png" alt="Mille-Feuille" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Mille-Feuille</h3>
+                    <p class="prod-desc">Feuilletage croustillant et crème vanille.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,20 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="noisettine-individuelle.png" alt="Noisettine Individuelle" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Noisettine Individuelle</h3>
+                    <p class="prod-desc">Macaron noisette, crémeux vanille et framboises fraîches.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="paris-brest-individuel.png" alt="Paris Brest Individuel" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Paris Brest Individuel</h3>
+                    <p class="prod-desc">Praliné noisette en format individuel.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="royal-individuel.png" alt="Royal Individuel" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Royal Individuel</h3>
+                    <p class="prod-desc">Dacquoise amande, praliné croustillant, mousse chocolat.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tartelette-vanille-praline.png" alt="Vanille Praliné" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Vanille Praliné</h3>
+                    <p class="prod-desc">Crème vanille et cœur praliné.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tartelette-cirton-meringue.png" alt="Citron Meringué" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Citron Meringué</h3>
+                    <p class="prod-desc">Crème citron acidulée et meringue.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tartelette-fraises.png" alt="Tartelette aux Fraises / aux Framboises" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Tartelette aux Fraises / aux Framboises</h3>
+                    <p class="prod-desc">Fruits frais sur crème pâtissière.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
+</div>
+<div class="sec-cta">
+            <a href="tel:0130555394" class="btn btn-dark">Appeler pour commander</a>
+          </div>
+        </section>
+
+        <section id="cakes-macarons" class="prod-section">
+          <div class="sec-head">
+            <h2>Cakes &amp; macarons</h2>
+            <p class="sec-intro">Des douceurs à emporter, pour un goûter ou une attention gourmande.</p>
+          </div>
+            
+              <p class="pg-label">Cakes &amp; plateaux</p>
+              <div class="prod-grid"><article class="prod-card">
+                    <div class="prod-photo"><img src="cake-chocolat.png" alt="Cake Chocolat Vanille" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Cake Chocolat Vanille</h3>
+                    <p class="prod-desc">Moelleux, marbré chocolat et vanille.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">9,80 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="cake-orange.png" alt="Cake Orange Noisette" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Cake Orange Noisette</h3>
+                    <p class="prod-desc">Parfumé à l’orange et aux noisettes.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">9,80 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="Petits fours sucre.png" alt="Plateau Petits Fours Sucrés" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Plateau Petits Fours Sucrés</h3>
+                    <p class="prod-desc">Un assortiment sucré pour vos réceptions.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Plateau</span><span class="size-price">22,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+</div>
+            <p class="pg-label">Macarons</p>
+              <div class="prod-grid macarons-grid"><article class="prod-card">
+                    <div class="prod-photo"><img src="grande-boite-de-macaron.png" alt="Grande Boîte de Macarons (15)" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Grande Boîte de Macarons (15)</h3>
+                    <p class="prod-desc">Un assortiment de nos macarons du moment.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Boîte de 15</span><span class="size-price">17,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="petite-boite-de-macarons.png" alt="Petite Boîte de Macarons (8)" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Petite Boîte de Macarons (8)</h3>
+                    <p class="prod-desc">Un assortiment de nos macarons du moment.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Boîte de 8</span><span class="size-price">10,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+</div>
+          <div class="sec-cta">
+            <a href="tel:0130555394" class="btn btn-dark">Appeler pour commander</a>
+          </div>
+        </section>
+
+        <section id="evenements" class="prod-section">
+          <div class="sec-head">
+            <span class="sec-badge">Sur commande</span>
+            <h2>Événements : pièces montées, gâteaux sur mesure, number cakes</h2>
+            <p class="sec-intro">Pour vos mariages, baptêmes et réceptions, appelez-nous pour discuter de votre projet. Prénom, date et fleurs en sucre sont inclus dans le prix ; les décorations spécifiques sont à définir sur demande avec notre cheffe pâtissière.</p>
+            <div class="lead-pill"><span class="dot"></span><span>10 jours de délai conseillé pour les commandes exceptionnelles et grandes quantités</span></div>
+          </div>
+            
+              <div class="prod-grid"><article class="prod-card">
+                    <div class="prod-photo"><img src="pieces-montee-classique.jpeg" alt="Pièce Montée Classique" loading="lazy" style="object-position: 50% 0%;"></div>
+                  <div>
+                    <h3 class="prod-name">Pièce Montée Classique</h3>
+                    <p class="prod-desc">4 choux par personne. Décorations incluses (prénom, date, fleurs en sucre).</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">7,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="tambour.png" alt="Pièce Montée Tambour" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Pièce Montée Tambour</h3>
+                    <p class="prod-desc">4 choux par personne, plusieurs étages pour les grandes réceptions.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">8,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="goutte.png" alt="Pièce Montée Goutte d’Eau" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Pièce Montée Goutte d’Eau</h3>
+                    <p class="prod-desc">4 choux par personne, une forme originale et élégante.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">8,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="pieces-montee-chiffre.png" alt="Pièce Montée Chiffre" loading="lazy" style="object-fit: contain; background: #E4D2BB;"></div>
+                  <div>
+                    <h3 class="prod-name">Pièce Montée Chiffre</h3>
+                    <p class="prod-desc">4 choux par personne, pour marquer un anniversaire ou une date.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">8,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="number-cake.png" alt="Number Cake" loading="lazy" style="object-fit: contain; background: #F2F0F4;"></div>
+                  <div>
+                    <h3 class="prod-name">Number Cake</h3>
+                    <p class="prod-desc">À partir de 10 personnes par chiffre. Prestige (pain de gênes pistache, croquant pistache, crème légère pistache et fruits rouges) ou Brownie chocolat (ganache vanille ou chocolat).</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Par personne</span><span class="size-price">6,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="craquante.png" alt="Craquante" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Craquante</h3>
+                    <p class="prod-desc">4 unités par personne (choux et/ou macarons). Choux : chocolat, vanille, pistache, praliné, Grand Marnier. Macarons : pistache, vanille, citron, chocolat, praliné, framboise, passion, caramel.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">6,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="plateau-de-choux.png" alt="Plateau de Choux" loading="lazy" style="object-fit: contain; background: #E5D3CC;"></div>
+                  <div>
+                    <h3 class="prod-name">Plateau de Choux</h3>
+                    <p class="prod-desc">Parfums : chocolat, vanille, pistache, praliné, Grand Marnier.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Le chou</span><span class="size-price">1,50 €</span></div>
+                    </div>
+                  </div>
+                </article>
+</div>
+            <div class="list-group">
+              <p class="pg-label">Autres créations à la part</p>
+              <div class="list-col">
+                <div class="list-row"><span>Part Merveilleux / Caprice / d’Opéra / de Framboisier / de Prestige / Fraisier / Plaisir / Éclat (dès 10 personnes)</span><span class="list-price">5,80 €</span></div>
+              </div>
+            </div>
+          <div class="sec-cta">
+            <a href="tel:0130555394" class="btn btn-dark">Appeler pour commander</a>
+          </div>
+        </section>
+
+        <section id="pain" class="prod-section">
           <div class="sec-head">
             
             <h2>Pain artisanal</h2>
@@ -651,7 +1170,7 @@
                   </div>
                 </article>
 <article class="prod-card">
-                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
+                    <div class="prod-photo"><img src="breton.png" alt="Breton" loading="lazy"></div>
                   <div>
                     <h3 class="prod-name">Breton <span class="bio-badge">BIO</span></h3>
                     <p class="prod-desc">Farine de sarrasin, farine de tradition et graines.</p>
@@ -663,462 +1182,10 @@
 <article class="prod-card">
                     <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
                   <div>
-                    <h3 class="prod-name">Meule <span class="bio-badge">BIO</span></h3>
-                    <p class="prod-desc">Farine de meule artisanale.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,80 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
-                  <div>
-                    <h3 class="prod-name">Pain Burger</h3>
-                    
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">1,10 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
-                  <div>
                     <h3 class="prod-name">Petit Épeautre</h3>
                     <p class="prod-desc">Farine d'épeautre.</p>
                     <div class="size-list">
                         <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,80 €</span></div>
-                    </div>
-                  </div>
-                </article>
-</div>
-            
-            
-          <div class="sec-cta">
-            <a href="tel:0130555394" class="btn btn-dark">Appeler pour commander</a>
-          </div>
-        </section>
-
-        <section id="patisserie" class="prod-section">
-          <div class="sec-head">
-            <span class="sec-badge">Signature</span>
-            <h2>La pâtisserie : notre signature</h2>
-            <p class="sec-intro">Chaque pièce est pensée comme un moment de plaisir, façonnée dans notre atelier.</p>
-            <div class="lead-pill"><span class="dot"></span><span>Commande conseillée 48h à l’avance · Pas de commande le samedi pour une livraison le dimanche</span></div>
-          </div>
-            
-              <div class="prod-grid"><article class="prod-card">
-                    <div class="prod-photo"><img src="caprice.png" alt="Caprice" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Caprice</h3>
-                    <p class="prod-desc">Biscuit citron amande, crémeux cassis framboise, mousse fromage blanc citron vert.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="charlotte-aux-fraises.png" alt="Charlotte aux Fraises" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Charlotte aux Fraises</h3>
-                    <p class="prod-desc">Biscuits cuillère et fraises fraîches.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="eclat.png" alt="Éclat" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Éclat</h3>
-                    <p class="prod-desc">Noisettes, bavaroise vanille et caramel fleur de sel.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="fraisiers.png" alt="Fraisier" loading="lazy" style="object-fit: contain; background: #CDAE90;"></div>
-                  <div>
-                    <h3 class="prod-name">Fraisier</h3>
-                    <p class="prod-desc">Génoise, crème pâtissière légère, fraises.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="fraicheur-des-iles.png" alt="Fraîcheur des Îles" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Fraîcheur des Îles</h3>
-                    <p class="prod-desc">Dacquoise coco, palet chocolat, mousse passion, framboises.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="merveilleux.png" alt="Merveilleux" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Merveilleux</h3>
-                    <p class="prod-desc">Brownie, bavaroise vanille, mousse chocolat caramel.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="paris-brest.png" alt="Paris Brest" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Paris Brest</h3>
-                    <p class="prod-desc">Praliné noisette et pâte à choux, notre grand classique.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="pavlova.png" alt="Pavlova" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Pavlova</h3>
-                    <p class="prod-desc">Meringue croustillante, fruits frais et chantilly.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="plaisir.png" alt="Plaisir" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Plaisir</h3>
-                    <p class="prod-desc">Parfait vanille et chocolat, Joconde caramélisée.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="royal.png" alt="Royale" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Royale</h3>
-                    <p class="prod-desc">Dacquoise amande, praliné croustillant, mousse chocolat.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="saint-honore.png" alt="Saint Honoré" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Saint Honoré</h3>
-                    <p class="prod-desc">Chantilly vanille et choux caramélisés.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">18,80 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">28,20 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">37,60 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tarte-aux-fraises.png" alt="Tarte aux Fraises" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tarte aux Fraises</h3>
-                    <p class="prod-desc">Fraises fraîches sur crème pâtissière.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">41,60 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tarte-fraises-et-framboises.png" alt="Tarte aux Fraises &amp; Framboises" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tarte aux Fraises &amp; Framboises</h3>
-                    <p class="prod-desc">Un mélange de fruits rouges de saison.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">41,60 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tarte-framboises.png" alt="Tarte aux Framboises" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tarte aux Framboises</h3>
-                    <p class="prod-desc">Framboises fraîches sur crème pâtissière.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">41,60 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tarte-citron-meringuee.png" alt="Tarte Citron Meringuée" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tarte Citron Meringuée</h3>
-                    <p class="prod-desc">Crème citron acidulée, meringue légèrement dorée.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">20,80 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">31,20 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="vanille-praline.png" alt="Tarte Vanille Praliné" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tarte Vanille Praliné</h3>
-                    <p class="prod-desc">Crème vanille et cœur praliné.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">27,00 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tropezienne-grande.png" alt="Tropézienne" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tropézienne</h3>
-                    <p class="prod-desc">Brioche fourrée à la crème diplomate.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">25,20 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="Noisettine.png" alt="Noisettine" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Noisettine</h3>
-                    <p class="prod-desc">Macaron noisette, crémeux vanille et framboises fraîches.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">43,20 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
-                  <div>
-                    <h3 class="prod-name">Opéra</h3>
-                    <p class="prod-desc">Biscuit Joconde, crème café, ganache chocolat.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">4 personnes</span><span class="size-price">23,20 €</span></div>
-                        <div class="size-row"><span class="size-label">6 personnes</span><span class="size-price">34,80 €</span></div>
-                        <div class="size-row"><span class="size-label">8 personnes</span><span class="size-price">46,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-</div>
-            <p class="pg-label">Pâtisserie individuelle</p>
-              <div class="prod-grid"><article class="prod-card">
-                    <div class="prod-photo"><img src="baba-au-rhum.png" alt="Baba au Rhum" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Baba au Rhum</h3>
-                    <p class="prod-desc">Imbibé de rhum, servi avec sa chantilly.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="eclair-cafe-chocolat.png" alt="Éclair Café / Chocolat" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Éclair Café / Chocolat</h3>
-                    <p class="prod-desc">Crème pâtissière café ou chocolat.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">3,00 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="eclat-individuel.png" alt="Éclat Individuel" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Éclat Individuel</h3>
-                    <p class="prod-desc">Noisettes, bavaroise vanille et caramel fleur de sel.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="fraicheur-des-iles-individuel.png" alt="Fraîcheur des Îles Individuel" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Fraîcheur des Îles Individuel</h3>
-                    <p class="prod-desc">Dacquoise coco, palet chocolat, mousse passion, framboises.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="merveilleux-individuel.png" alt="Merveilleux Individuel" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Merveilleux Individuel</h3>
-                    <p class="prod-desc">Brownie, bavaroise vanille, mousse chocolat caramel.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="mille-feuille.png" alt="Mille-Feuille" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Mille-Feuille</h3>
-                    <p class="prod-desc">Feuilletage croustillant et crème vanille.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,20 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="noisettine-individuelle.png" alt="Noisettine Individuelle" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Noisettine Individuelle</h3>
-                    <p class="prod-desc">Macaron noisette, crémeux vanille et framboises fraîches.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="paris-brest-individuel.png" alt="Paris Brest Individuel" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Paris Brest Individuel</h3>
-                    <p class="prod-desc">Praliné noisette en format individuel.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="royal-individuel.png" alt="Royal Individuel" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Royal Individuel</h3>
-                    <p class="prod-desc">Dacquoise amande, praliné croustillant, mousse chocolat.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">5,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tartelette-vanille-praline.png" alt="Vanille Praliné" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Vanille Praliné</h3>
-                    <p class="prod-desc">Crème vanille et cœur praliné.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tartelette-cirton-meringue.png" alt="Citron Meringué" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Citron Meringué</h3>
-                    <p class="prod-desc">Crème citron acidulée et meringue.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tartelette-fraises.png" alt="Tartelette aux Fraises / aux Framboises" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tartelette aux Fraises / aux Framboises</h3>
-                    <p class="prod-desc">Fruits frais sur crème pâtissière.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,40 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tropezienne.png" alt="Tropézienne Individuelle" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Tropézienne Individuelle</h3>
-                    <p class="prod-desc">Brioche et crème diplomate en format individuel.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">4,20 €</span></div>
-                    </div>
-                  </div>
-                </article>
-</div>
-            <p class="pg-label">Cakes &amp; plateaux</p>
-              <div class="prod-grid"><article class="prod-card">
-                    <div class="prod-photo"><img src="cake-chocolat.png" alt="Cake Chocolat Vanille" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Cake Chocolat Vanille</h3>
-                    <p class="prod-desc">Moelleux, marbré chocolat et vanille.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">9,80 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="cake-orange.png" alt="Cake Orange Noisette" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Cake Orange Noisette</h3>
-                    <p class="prod-desc">Parfumé à l’orange et aux noisettes.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">9,80 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
-                  <div>
-                    <h3 class="prod-name">Plateau Petits Fours Salés</h3>
-                    <p class="prod-desc">Un assortiment salé pour vos réceptions.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Plateau</span><span class="size-price">28,00 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="Petits fours sucre.png" alt="Plateau Petits Fours Sucrés" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Plateau Petits Fours Sucrés</h3>
-                    <p class="prod-desc">Un assortiment sucré pour vos réceptions.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Plateau</span><span class="size-price">22,00 €</span></div>
-                    </div>
-                  </div>
-                </article>
-</div>
-            <p class="pg-label">Macarons</p>
-              <div class="prod-grid macarons-grid"><article class="prod-card">
-                    <div class="prod-photo"><img src="grande-boite-de-macaron.png" alt="Grande Boîte de Macarons (15)" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Grande Boîte de Macarons (15)</h3>
-                    <p class="prod-desc">Un assortiment de nos macarons du moment.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Boîte de 15</span><span class="size-price">17,00 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="petite-boite-de-macarons.png" alt="Petite Boîte de Macarons (8)" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Petite Boîte de Macarons (8)</h3>
-                    <p class="prod-desc">Un assortiment de nos macarons du moment.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Boîte de 8</span><span class="size-price">10,00 €</span></div>
                     </div>
                   </div>
                 </article>
@@ -1311,6 +1378,34 @@
                     </div>
                   </div>
                 </article>
+<article class="prod-card">
+                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
+                  <div>
+                    <h3 class="prod-name">Madeleine</h3>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">1,60 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
+                  <div>
+                    <h3 class="prod-name">Brioche aux Chocolats</h3>
+                    <p class="prod-desc">À partager.</p>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">8,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
+                  <div>
+                    <h3 class="prod-name">Brioche Feuilletée Individuelle</h3>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">1,40 €</span></div>
+                    </div>
+                  </div>
+                </article>
 </div>
             
             
@@ -1448,7 +1543,7 @@
                   </div>
                 </article>
 <article class="prod-card">
-                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
+                    <div class="prod-photo"><img src="jambon-crudites.png" alt="Jambon Crudités" loading="lazy"></div>
                   <div>
                     <h3 class="prod-name">Jambon Crudités</h3>
                     <p class="prod-desc">Jambon blanc et crudités fraîches.</p>
@@ -1488,7 +1583,7 @@
                   </div>
                 </article>
 <article class="prod-card">
-                    <div class="prod-photo"><div class="img-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.3-2h5.4L16 6"/></svg><span>Photo bientôt disponible</span></div></div>
+                    <div class="prod-photo"><img src="speciale.png" alt="Spéciale" loading="lazy"></div>
                   <div>
                     <h3 class="prod-name">Spéciale</h3>
                     <p class="prod-desc">Notre sandwich signature.</p>
@@ -1582,96 +1677,6 @@
               </div>
 
 
-          <div class="sec-cta">
-            <a href="tel:0130555394" class="btn btn-dark">Appeler pour commander</a>
-          </div>
-        </section>
-
-        <section id="evenements" class="prod-section">
-          <div class="sec-head">
-            <span class="sec-badge">Sur commande</span>
-            <h2>Événements : pièces montées, gâteaux sur mesure, number cakes</h2>
-            <p class="sec-intro">Pour vos mariages, baptêmes et réceptions, appelez-nous pour discuter de votre projet. Prénom, date et fleurs en sucre sont inclus dans le prix ; les décorations spécifiques sont à définir sur demande avec notre cheffe pâtissière.</p>
-            <div class="lead-pill"><span class="dot"></span><span>10 jours de délai conseillé pour les commandes exceptionnelles et grandes quantités</span></div>
-          </div>
-            
-              <div class="prod-grid"><article class="prod-card">
-                    <div class="prod-photo"><img src="pieces-montee-classique.jpeg" alt="Pièce Montée Classique" loading="lazy" style="object-position: 50% 0%;"></div>
-                  <div>
-                    <h3 class="prod-name">Pièce Montée Classique</h3>
-                    <p class="prod-desc">4 choux par personne. Décorations incluses (prénom, date, fleurs en sucre).</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">7,00 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="tambour.png" alt="Pièce Montée Tambour" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Pièce Montée Tambour</h3>
-                    <p class="prod-desc">4 choux par personne, plusieurs étages pour les grandes réceptions.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">8,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="goutte.png" alt="Pièce Montée Goutte d’Eau" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Pièce Montée Goutte d’Eau</h3>
-                    <p class="prod-desc">4 choux par personne, une forme originale et élégante.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">8,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="pieces-montee-chiffre.png" alt="Pièce Montée Chiffre" loading="lazy" style="object-fit: contain; background: #E4D2BB;"></div>
-                  <div>
-                    <h3 class="prod-name">Pièce Montée Chiffre</h3>
-                    <p class="prod-desc">4 choux par personne, pour marquer un anniversaire ou une date.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">8,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="number-cake.png" alt="Number Cake" loading="lazy" style="object-fit: contain; background: #F2F0F4;"></div>
-                  <div>
-                    <h3 class="prod-name">Number Cake</h3>
-                    <p class="prod-desc">À partir de 10 personnes par chiffre. Prestige (pain de gênes pistache, croquant pistache, crème légère pistache et fruits rouges) ou Brownie chocolat (ganache vanille ou chocolat).</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Par personne</span><span class="size-price">6,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="craquante.png" alt="Craquante" loading="lazy"></div>
-                  <div>
-                    <h3 class="prod-name">Craquante</h3>
-                    <p class="prod-desc">4 unités par personne (choux et/ou macarons). Choux : chocolat, vanille, pistache, praliné, Grand Marnier. Macarons : pistache, vanille, citron, chocolat, praliné, framboise, passion, caramel.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">La part</span><span class="size-price">6,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-<article class="prod-card">
-                    <div class="prod-photo"><img src="plateau-de-choux.png" alt="Plateau de Choux" loading="lazy" style="object-fit: contain; background: #E5D3CC;"></div>
-                  <div>
-                    <h3 class="prod-name">Plateau de Choux</h3>
-                    <p class="prod-desc">Parfums : chocolat, vanille, pistache, praliné, Grand Marnier.</p>
-                    <div class="size-list">
-                        <div class="size-row"><span class="size-label">Le chou</span><span class="size-price">1,50 €</span></div>
-                    </div>
-                  </div>
-                </article>
-</div>
-            <div class="list-group">
-              <p class="pg-label">Autres créations à la part</p>
-              <div class="list-col">
-                <div class="list-row"><span>Part Merveilleux / Caprice / d’Opéra / de Framboisier / de Prestige / Fraisier / Plaisir / Éclat (dès 10 personnes)</span><span class="list-price">5,80 €</span></div>
-              </div>
-            </div>
           <div class="sec-cta">
             <a href="tel:0130555394" class="btn btn-dark">Appeler pour commander</a>
           </div>
@@ -1863,6 +1868,75 @@
       navigate(page, anchor);
     });
   });
+
+  // highlight the active category tab
+  var catNavLinks = document.querySelectorAll('.cat-nav a');
+  catNavLinks.forEach(function (el) {
+    el.addEventListener('click', function () {
+      catNavLinks.forEach(function (l) { l.classList.remove('active'); });
+      el.classList.add('active');
+    });
+  });
+
+  // product search
+  var prodSearchInput = document.getElementById('prodSearch');
+  if (prodSearchInput) {
+    var prodSearchClear = document.getElementById('prodSearchClear');
+    var prodSearchEmpty = document.getElementById('prodSearchEmpty');
+    var allProdCards = Array.prototype.slice.call(document.querySelectorAll('.prod-card'));
+    var allPgLabels = Array.prototype.slice.call(document.querySelectorAll('.pg-label'));
+    var allProdSections = Array.prototype.slice.call(document.querySelectorAll('.prod-section'));
+
+    function normalizeText(str) {
+      return str.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    }
+
+    function runProductSearch() {
+      var query = normalizeText(prodSearchInput.value.trim());
+      prodSearchClear.hidden = query.length === 0;
+
+      if (!query) {
+        allProdCards.forEach(function (c) { c.classList.remove('search-hidden'); });
+        allPgLabels.forEach(function (l) { l.classList.remove('search-hidden'); });
+        allProdSections.forEach(function (s) { s.classList.remove('search-hidden'); });
+        prodSearchEmpty.hidden = true;
+        return;
+      }
+
+      var anyVisible = false;
+      allProdSections.forEach(function (section) {
+        var cardsInSection = section.querySelectorAll('.prod-card');
+        var sectionHasMatch = false;
+        cardsInSection.forEach(function (card) {
+          var nameEl = card.querySelector('.prod-name');
+          var name = nameEl ? normalizeText(nameEl.textContent) : '';
+          var match = name.indexOf(query) !== -1;
+          card.classList.toggle('search-hidden', !match);
+          if (match) { sectionHasMatch = true; anyVisible = true; }
+        });
+        section.classList.toggle('search-hidden', !sectionHasMatch);
+      });
+
+      allPgLabels.forEach(function (label) {
+        var grid = label.nextElementSibling;
+        if (grid && grid.classList && grid.classList.contains('prod-grid')) {
+          var hasVisible = Array.prototype.slice.call(grid.querySelectorAll('.prod-card')).some(function (c) {
+            return !c.classList.contains('search-hidden');
+          });
+          label.classList.toggle('search-hidden', !hasVisible);
+        }
+      });
+
+      prodSearchEmpty.hidden = anyVisible;
+    }
+
+    prodSearchInput.addEventListener('input', runProductSearch);
+    prodSearchClear.addEventListener('click', function () {
+      prodSearchInput.value = '';
+      runProductSearch();
+      prodSearchInput.focus();
+    });
+  }
 
   // header scroll background
   var scrolled = false;

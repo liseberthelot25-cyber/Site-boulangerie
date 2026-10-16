@@ -349,6 +349,34 @@
     .news-head, .news-track { padding-left: 24px; padding-right: 24px; }
   }
 
+  /* ===== HALLOWEEN ===== */
+  .halloween-section { background: var(--brown); padding: 60px 20px 56px; }
+  .halloween-section[hidden] { display: none; }
+  .hw-head { text-align: center; max-width: 520px; margin: 0 auto 36px; }
+  .hw-eyebrow { font-family: 'Manrope', sans-serif; font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--tan-lighter); margin: 0 0 10px; }
+  .hw-title { font-size: 44px; line-height: 1.05; color: var(--cream); margin: 0 0 12px; }
+  .hw-title em { font-style: italic; color: var(--tan-lighter); }
+  .hw-sub { font-family: 'Manrope', sans-serif; font-size: 14px; line-height: 1.7; color: #E9DCC8; margin: 0; }
+  .hw-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 14px; max-width: 1000px; margin: 0 auto; }
+  .hw-card { flex: 0 0 calc(50% - 7px); max-width: 230px; color: var(--cream); }
+  .hw-photo { position: relative; aspect-ratio: 4 / 5; border-radius: 2px; overflow: hidden; background: var(--beige); margin-bottom: 12px; }
+  .hw-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hw-soon { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; text-align: center; padding: 12px; font-family: 'Manrope', sans-serif; font-size: 11px; color: var(--tan); }
+  .hw-photo.no-photo img { display: none; }
+  .hw-photo.no-photo .hw-soon { display: flex; }
+  .hw-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .hw-row h3 { font-size: 20px; line-height: 1.2; margin: 0; color: var(--cream); }
+  .hw-price { font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 600; color: var(--tan-lighter); white-space: nowrap; }
+  .hw-desc { font-family: 'Manrope', sans-serif; font-size: 12.5px; line-height: 1.55; color: #D8C8AF; margin: 4px 0 0; }
+  .hw-format { font-family: 'Manrope', sans-serif; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--tan-lighter); margin: 6px 0 0; }
+  .hw-banner { max-width: 560px; margin: 44px auto 0; text-align: center; border: 1px solid rgba(251,246,239,0.3); border-radius: 4px; padding: 28px 20px; }
+  .hw-banner-title { font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--cream); margin: 0 0 6px; }
+  .hw-banner-sub { font-family: 'Instrument Serif', serif; font-size: 22px; color: var(--cream); margin: 0 0 18px; }
+  @media (min-width: 860px) {
+    .hw-card { flex-basis: calc(25% - 11px); }
+    .hw-title { font-size: 56px; }
+  }
+
   @media (min-width: 860px) {
     .hero-title { max-width: 480px; font-size: 46px; }
     .produits-head h1, .boutique-head h1, .actu-head h1, .contact-head h1 { font-size: 38px; }
@@ -408,6 +436,64 @@
         <div class="open-status" id="openStatus"><span class="dot"></span><span class="status-text">—</span></div>
       </div>
     </div>
+
+    <!-- ===== HALLOWEEN (masquée automatiquement après le 31 octobre 2026) ===== -->
+    <section class="halloween-section" id="halloween" aria-label="Halloween" data-until="2026-10-31T23:59:59">
+      <div class="hw-head">
+        <p class="hw-eyebrow">Édition limitée</p>
+        <h2 class="hw-title">Halloween <em>2026</em></h2>
+        <p class="hw-sub">Nos créations monstrueusement gourmandes, uniquement le samedi 31 octobre.</p>
+      </div>
+      <div class="hw-grid">
+        <article class="hw-card">
+          <div class="hw-photo"><img src="halloween-citrouille.png" alt="Citrouille" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="hw-soon">Photo bientôt disponible</span></div>
+          <div class="hw-row"><h3>Citrouille</h3><span class="hw-price">6 €</span></div>
+          <p class="hw-desc">Tartelette tiramisu</p>
+          <p class="hw-format">Individuel</p>
+        </article>
+        <article class="hw-card">
+          <div class="hw-photo"><img src="halloween-tete-de-mort.png" alt="Tête de mort" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="hw-soon">Photo bientôt disponible</span></div>
+          <div class="hw-row"><h3>Tête de mort</h3><span class="hw-price">12 €</span></div>
+          <p class="hw-desc">Royal</p>
+          <p class="hw-format">2 personnes</p>
+        </article>
+        <article class="hw-card">
+          <div class="hw-photo"><img src="halloween-araignee.png" alt="Araignée" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="hw-soon">Photo bientôt disponible</span></div>
+          <div class="hw-row"><h3>Araignée</h3><span class="hw-price">6 €</span></div>
+          <p class="hw-desc">Macaron chocolat noir et caramel coulant</p>
+          <p class="hw-format">Individuel</p>
+        </article>
+        <article class="hw-card">
+          <div class="hw-photo"><img src="halloween-marmite.jpg" alt="Marmite" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="hw-soon">Photo bientôt disponible</span></div>
+          <div class="hw-row"><h3>Marmite</h3><span class="hw-price">6 €</span></div>
+          <p class="hw-desc">Compotée exotique, ganache montée vanille et crumble</p>
+          <p class="hw-format">Individuel</p>
+        </article>
+        <article class="hw-card">
+          <div class="hw-photo"><img src="halloween-fantome.png" alt="Fantôme" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="hw-soon">Photo bientôt disponible</span></div>
+          <div class="hw-row"><h3>Fantôme</h3><span class="hw-price">6 €</span></div>
+          <p class="hw-desc">Vanille praliné</p>
+          <p class="hw-format">Individuel</p>
+        </article>
+        <article class="hw-card">
+          <div class="hw-photo"><img src="halloween-monsieur-jack.png" alt="Monsieur Jack" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="hw-soon">Photo bientôt disponible</span></div>
+          <div class="hw-row"><h3>Monsieur Jack</h3><span class="hw-price">6 €</span></div>
+          <p class="hw-desc">Pistache chocolat</p>
+          <p class="hw-format">Individuel</p>
+        </article>
+        <article class="hw-card">
+          <div class="hw-photo"><img src="halloween-cookie-araignee.png" alt="Cookie araignée" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="hw-soon">Photo bientôt disponible</span></div>
+          <div class="hw-row"><h3>Cookie araignée</h3><span class="hw-price">4 €</span></div>
+          
+          <p class="hw-format">Pièce</p>
+        </article>
+      </div>
+      <div class="hw-banner">
+        <p class="hw-banner-title">Uniquement le samedi 31 octobre</p>
+        <p class="hw-banner-sub">Commandez au plus tard le jeudi 29 octobre 2026</p>
+        <a href="tel:0130555394" class="btn btn-orange">Appeler pour commander</a>
+      </div>
+    </section>
 
     <!-- carousel nouveautés -->
     <section class="news-section" aria-label="Nouveautés">
@@ -844,6 +930,15 @@
                     <p class="prod-desc">Crème pâtissière café ou chocolat.</p>
                     <div class="size-list">
                         <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">3,00 €</span></div>
+                    </div>
+                  </div>
+                </article>
+<article class="prod-card">
+                    <div class="prod-photo"><img src="religieuse-chocolat.png" alt="Religieuse au chocolat" loading="lazy"></div>
+                  <div>
+                    <h3 class="prod-name">Religieuse au Chocolat</h3>
+                    <div class="size-list">
+                        <div class="size-row"><span class="size-label">Pièce</span><span class="size-price">3,80 €</span></div>
                     </div>
                   </div>
                 </article>
@@ -2045,6 +2140,14 @@
     }
     update();
     setInterval(update, 60000);
+  })();
+
+  // halloween section auto-hide after the event
+  (function () {
+    var el = document.getElementById('halloween');
+    if (!el) return;
+    var until = new Date(el.getAttribute('data-until'));
+    if (!isNaN(until) && new Date() > until) el.hidden = true;
   })();
 
   // news carousel

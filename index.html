@@ -2022,19 +2022,6 @@
     }
     if (prev) prev.addEventListener('click', function () { go(-1); });
     if (next) next.addEventListener('click', function () { go(1); });
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
-    var paused = false, timer = null;
-    function tick() {
-      var home = document.querySelector('.page[data-page="home"]');
-      if (!paused && home && home.classList.contains('active')) go(1);
-    }
-    function start() { if (!timer) timer = setInterval(tick, 5000); }
-    function stop() { paused = true; }
-    function resume() { paused = false; }
-    ['mouseenter', 'touchstart', 'focusin'].forEach(function (ev) { track.addEventListener(ev, stop, { passive: true }); });
-    ['mouseleave', 'touchend', 'focusout'].forEach(function (ev) { track.addEventListener(ev, resume, { passive: true }); });
-    start();
   })();
 
   // product search

@@ -349,6 +349,23 @@
     .news-head, .news-track { padding-left: 24px; padding-right: 24px; }
   }
 
+  /* ===== HERO (photo entière + texte sur fond crème) ===== */
+  .hero.hero-split { height: auto; min-height: 0; overflow: visible; padding: 96px 20px 0; background: var(--cream); }
+  .hero-split .hero-media { animation: none; width: 100%; max-width: 520px; margin: 0 auto; border-radius: 2px; overflow: hidden; background: var(--beige); }
+  .hero-split .hero-media img { width: 100%; height: auto; aspect-ratio: 1320 / 1533; object-fit: cover; display: block; }
+  .hero-split .hero-copy { position: static; padding: 30px 4px 48px; text-align: center; }
+  .hero-split .hero-title { color: var(--brown); font-size: 38px; max-width: 380px; margin: 0 auto 24px; }
+  .hero-split .hero-title em { color: var(--orange); }
+  .hero-split .open-status { color: var(--brown); background: rgba(59,42,30,0.05); border: 1px solid var(--tan-light); }
+  .hero-split .open-status.is-closed .dot { background: var(--tan); }
+  @media (min-width: 860px) {
+    .hero.hero-split { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 56px; min-height: 86vh; max-width: 1180px; margin: 0 auto; padding: 120px 32px 48px; }
+    .hero-split .hero-media { order: 2; max-width: none; }
+    .hero-split .hero-copy { order: 1; padding: 0; text-align: left; }
+    .hero-split .hero-title { font-size: 58px; max-width: 520px; margin: 0 0 30px; }
+    .hero-split .hero-cta-row { justify-content: flex-start; }
+  }
+
   @media (min-width: 860px) {
     .hero-title { max-width: 480px; font-size: 46px; }
     .produits-head h1, .boutique-head h1, .actu-head h1, .contact-head h1 { font-size: 38px; }
@@ -395,11 +412,10 @@
 
   <!-- ===== HOME ===== -->
   <section class="page active" data-page="home">
-    <div class="hero">
+    <div class="hero hero-split">
       <div class="hero-media">
-        <img src="acceuil.png" alt="Aux Plaisirs des Clayes" loading="eager">
+        <img src="accueil-tartelette.jpg" alt="Tartelette de la boutique, coupée en deux" loading="eager">
       </div>
-      <div class="hero-scrim"></div>
       <div class="hero-copy">
         <h1 class="hero-title">Le <em>fait-maison</em>, chaque jour, depuis 2008.</h1>
         <div class="hero-cta-row">
